@@ -13,3 +13,20 @@ Technologies: Python, TensorFlow/Keras, NumPy, Matplotlib, Pandas
 - `results/` – saved model weights, training logs, plots, and evaluation metrics
 - `reports/` – visualizations, figures, and reports summarizing model performance and analysis insights
 
+## Models 
+
+This project compares two approaches for image classification on the Caltech-101 dataset:
+
+1. **Custom ResNet (from scratch)**  
+   - Implemented a ResNet-34-like architecture using a custom ResidualBlock.  
+   - Fully trained on our preprocessed dataset.  
+   - Allows full control over network design and residual connections.
+
+2. **Pretrained ResNet50 with custom classification head**  
+   - Leveraged Keras' ResNet50 as a feature extractor (ImageNet weights).  
+   - Added a custom Dense head for 101 classes.  
+   - Used for benchmarking and comparison with the custom model.
+
+This comparison highlights the trade-off between **training a network from scratch** versus **using transfer learning with a pretrained backbone**.
+
+
