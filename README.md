@@ -8,7 +8,7 @@ Technologies: Python, TensorFlow/Keras, NumPy, Matplotlib, Pandas
 
 ## Repository Structure
 - `data/` – contains raw compressed data and fully extracted datasets (see `data/README.md` for details)
-- `notebooks/` – Jupyter notebooks for preprocessing (including data ingestion and data extraction), exploratory data analysis, and modeling experiments
+- `notebooks/` – Jupyter notebooks for preprocessing (including data ingestion, data extraction and data loading), exploratory data analysis, and modeling experiments
 - `src/` – Python scripts for data preprocessing, model definition, training, and utility functions
 - `results/` – saved model weights, training logs, plots, and evaluation metrics
 - `reports/` – visualizations, figures, and reports summarizing model performance and analysis insights
