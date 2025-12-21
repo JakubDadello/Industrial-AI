@@ -10,8 +10,15 @@ from keras import models, layers, optimizers
 from prepare_raw_data import X,Y
 from prepare_dataset import data_preprocessing
 
-model_path = os.path.join("results", "model_CNN.h5")
 
+# =========================
+# DEFINE RESULTS FOLDER
+# =========================
+results_dir = os.path.join(os.path.dirname(os.path.abspath(__file__)), "results")
+os.makedirs(results_dir, exist_ok=True)  # create folder if it doesn't exist
+
+# full path to the model
+model_path = os.path.join(results_dir, "model_CNN.h5")
 
 class ResidualBlock(keras.layers.Layer):
     """
