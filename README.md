@@ -1,13 +1,9 @@
 # image_recognition_system
 
-Image Recognition System is an image classification project based on a residual convolutional neural network (ResNet) with a custom implementation of residual layers and transfer learning. The goal is to recognize objects from the Caltech-101 dataset (101 classes).
+Image Recognition System is a convolutional neural network (CNN) project for classifying images from the Caltech-101 dataset (101 classes). The model uses custom residual blocks and transfer learning to improve feature extraction and convergence.
 
-The model, defined in model.py, was trained for 5 epochs, monitoring loss and accuracy on both training and validation sets.
+Data preprocessing includes resizing, normalization, and augmentation to enhance generalization. The network was trained for 5 epochs, monitoring loss and accuracy on both training and validation sets. Evaluation demonstrates effective classification across multiple classes, and insights from model performance guide potential improvements.
 
-The project includes image preprocessing, data augmentation, and techniques to improve model generalization.
-
-The results demonstrate effective classification and stable convergence, enhanced by transfer learning.
-
-Technologies and tools: Python, TensorFlow/Keras, NumPy, Matplotlib, Pandas.
+Technologies: Python, TensorFlow/Keras, NumPy, Matplotlib, Pandas
 
 ![Evaluation](images/evaluation.png)
