@@ -1,6 +1,3 @@
-import sys
-import os
-sys.path.append(os.path.abspath(".."))
 import numpy as np
 import tensorflow as tf
 import matplotlib.pyplot as plt
