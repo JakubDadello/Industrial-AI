@@ -16,7 +16,7 @@ Data preprocessing includes resizing, normalization, and augmentation to enhance
 ## Tech Stack
 
 - Language: Python 3.13.1
-- Libraries: Scikit-learn, Pandas, NumPy, Matplotlib, TensorFlow (MLP)
+- Libraries: Scikit-learn, Pandas, NumPy, Matplotlib, TensorFlow 
 - Tools: Canva (Presentation)
 
 
