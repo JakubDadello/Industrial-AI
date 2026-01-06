@@ -4,7 +4,6 @@ Image Recognition System is a convolutional neural network (CNN) project for cla
 
 Data preprocessing includes resizing, normalization, and augmentation to enhance generalization. The network was trained for 10 epochs, monitoring loss and accuracy on both training and validation sets. Evaluation demonstrates effective classification across multiple classes, and insights from model performance guide potential improvements.
 
-Technologies: Python, TensorFlow/Keras, NumPy, Matplotlib, Pandas
 
 ## Repository Structure
 - `data/` – contains raw compressed data and fully extracted datasets (see `data/README.md` for details)
@@ -12,6 +11,16 @@ Technologies: Python, TensorFlow/Keras, NumPy, Matplotlib, Pandas
 - `src/` – Python scripts for data preprocessing, model definition, training, and utility functions
 - `results/` – saved model weights, training logs, plots, and evaluation metrics
 - `reports/` – visualizations, figures, and reports summarizing model performance and analysis insights
+
+
+## Tech Stack
+
+- Language: Python 3.13.1
+- Libraries: Scikit-learn, Pandas, NumPy, Matplotlib, TensorFlow (MLP)
+- Tools: Power BI, SQL (Data Extraction), Canva (Presentation)
+
+For the full CRISP-DM methodology, see [CRISP-DM.md](CRISP-DM.md)
+
 
 ## Models 
 
