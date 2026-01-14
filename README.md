@@ -2,9 +2,7 @@
 
 ## Project Description
 
-Image Recognition System is a convolutional neural network (CNN) project for classifying images from the Caltech-101 dataset (101 classes). The model uses custom residual blocks and transfer learning to improve feature extraction and convergence.
-
-Data preprocessing includes resizing, normalization, and augmentation to enhance generalization. The network was trained for 10 epochs, monitoring loss and accuracy on both training and validation sets. Evaluation demonstrates effective classification across multiple classes, and insights from model performance guide potential improvements.
+This project builds a complete deep‑learning pipeline for automated steel surface defect classification, covering data extraction, preprocessing, and model training. It compares a custom ResNet architecture with a fine‑tuned ResNet50 to evaluate the effectiveness of domain‑specific learning versus transfer learning in industrial quality‑control scenarios.
 
 ## How to Run
 
@@ -45,20 +43,19 @@ To run this project locally, you can use either Docker (recommended) or a standa
 - Tools: Canva (Presentation)
 
 
-## Models 
+## Models Architecture & Strategy
 
-This project compares two approaches for image classification on the Caltech-101 dataset:
+This project evaluates and compares two distinct architectural strategies for industrial defect classification:
 
-1. **Custom ResNet (from scratch)**  
-   - Implemented a ResNet-34-like architecture using a custom ResidualBlock.  
-   - Fully trained on our preprocessed dataset.  
-   - Allows full control over network design and residual connections.
+1. **Custom ResNet (Built from Scratch)** - Developed a tailored ResNet-18/34 inspired architecture implementing deep residual learning.
+   - Designed a custom `ResidualBlock` class to handle identity mappings and alleviate the vanishing gradient problem.
+   - Fully trained on the organized steel surface dataset to demonstrate the model's ability to learn domain-specific features without prior bias.
 
-2. **Pretrained ResNet50 with custom classification head**  
-   - Leveraged Keras' ResNet50 as a feature extractor (ImageNet weights).  
-   - Added a custom Dense head for 101 classes.  
-   - Used for benchmarking and comparison with the custom model.
+2. **Transfer Learning with ResNet50 (Fine-Tuning)** - Leveraged a pretrained ResNet50 backbone (ImageNet weights) as a high-level feature extractor.
+   - Replaced the top layers with a custom global average pooling and a dense classification head tailored for the 6 specific steel defect categories.
+   - Serves as a performance benchmark to evaluate how general-purpose features (ImageNet) adapt to specialized industrial textures.
 
-This comparison highlights the trade-off between **training a network from scratch** versus **using transfer learning with a pretrained backbone**.
+This dual-model approach highlights the trade-off between **domain-specific training from scratch** and the **efficiency of transfer learning** in a specialized industrial context.
 
+For the full CRISP-DM methodology, see CRISP-DM.md
 
