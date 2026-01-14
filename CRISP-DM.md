@@ -46,3 +46,20 @@ The dataset contains 1,800 grayscale images categorized into six distinct types 
 
 - Testing: 4% (113 images)
 
+# Data Preparation
+To ensure high model performance and robustness, a custom automated pipeline was developed.
+
+### Wrangling & Organization:
+
+`. Flat File Parsing: Since the source files were provided in a flat structure with labels in filenames (e.g., inclusion_1.jpg), an automated script was implemented to reorganize them into a directory-based structure (/train/inclusion/).
+
+2. Split Preservation: The pipeline strictly maintains the original split (85/11/4) to allow for fair evaluation against industry standards.
+
+### Preprocessing & Augmentation:
+
+1. Normalization: Pixel values are rescaled from [0, 255] to the [0, 1] range to facilitate faster convergence of the ResNet model.
+
+2. On-the-fly Augmentation: To prevent overfitting, the training pipeline applies random horizontal/vertical flips and rotations. This increases the model's ability to generalize to defects appearing at different angles.
+
+3. Performance Optimization: Leveraging the tf.data API, the pipeline uses Prefetching and Autotuning. This ensures the CPU prepares the next batch of images while the GPU is busy training, significantly reducing training time.
+
