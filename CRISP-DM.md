@@ -51,7 +51,7 @@ To ensure high model performance and robustness, a custom automated pipeline was
 
 ### Wrangling & Organization:
 
-`. Flat File Parsing: Since the source files were provided in a flat structure with labels in filenames (e.g., inclusion_1.jpg), an automated script was implemented to reorganize them into a directory-based structure (/train/inclusion/).
+1. Flat File Parsing: Since the source files were provided in a flat structure with labels in filenames (e.g., inclusion_1.jpg), an automated script was implemented to reorganize them into a directory-based structure (/train/inclusion/).
 
 2. Split Preservation: The pipeline strictly maintains the original split (85/11/4) to allow for fair evaluation against industry standards.
 
