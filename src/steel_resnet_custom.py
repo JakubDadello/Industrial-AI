@@ -10,24 +10,24 @@ import logging
 
 from src.data_pipeline import DataPipeline
 
-# ============================================================
+# ------------------------------------------------------------
 # Logging configuration
-# ============================================================
+# ------------------------------------------------------------
 logging.basicConfig(
     level=logging.INFO,
     format="%(asctime)s - %(levelname)s - %(message)s"
 )
 
-# ============================================================
+# ------------------------------------------------------------
 # Reproducibility (Seed)
-# ============================================================
+# ------------------------------------------------------------
 SEED = 42
 tf.random.set_seed(SEED)
 np.random.seed(SEED)
 
-# ============================================================
+# ------------------------------------------------------------
 # Configuration
-# ============================================================
+# ------------------------------------------------------------
 MODEL_PATH = "models/steel_resnet_custom.h5"
 BEST_MODEL_PATH = "models/steel_resnet_best.h5"
 
@@ -40,9 +40,9 @@ EPOCHS = 20
 NUM_CLASSES = 6
 
 
-# ============================================================
+# ------------------------------------------------------------
 # Residual Block
-# ============================================================
+# ------------------------------------------------------------
 class ResidualBlock(keras.layers.Layer):
     """
     Custom residual block implementing skip connections as used in ResNet architectures.
@@ -86,9 +86,9 @@ class ResidualBlock(keras.layers.Layer):
         return self.activation(x + skip)
 
 
-# ============================================================
+# ------------------------------------------------------------
 # Custom ResNet Builder
-# ============================================================
+# ------------------------------------------------------------
 def build_custom_resnet(input_shape, num_classes):
     """
     Builds a ResNet-34 style architecture using the custom ResidualBlock.
@@ -125,9 +125,9 @@ def build_custom_resnet(input_shape, num_classes):
     return keras.Model(inputs, outputs, name="Custom_ResNet_Steel")
 
 
-# ============================================================
+# ------------------------------------------------------------
 # Main Execution
-# ============================================================
+# ------------------------------------------------------------
 if __name__ == "__main__":
     logging.info("Initializing data pipeline...")
 
