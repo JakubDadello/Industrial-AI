@@ -1,127 +1,163 @@
+import os
+
 import numpy as np
 import tensorflow as tf
 import matplotlib.pyplot as plt
 from tensorflow import keras
-from keras import layers
-from prepare_raw_data import X, Y
-from prepare_dataset import data_preprocessing
-from tensorflow.keras.preprocessing.image import ImageDataGenerator
+import logging
 
+from data_pipeline import DataPipeline
 
-# =========================
-# DATA PREPARATION
-# =========================
-# Perform full preprocessing pipeline:
-# - train/val/test split
-# - resizing, normalization
-# - data augmentation (train only)
-train_generator, val_data, test_data = data_preprocessing(X, Y)
-
-X_val, Y_val = val_data
-X_test, Y_test = test_data
-
-val_data_gen = ImageDataGenerator()  
-
-val_generator = val_data_gen.flow(
-    X_val,
-    Y_val,
-    batch_size=32,
-    shuffle=False
+# ------------------------------------------------------------
+# Logging configuration
+# ------------------------------------------------------------
+logging.basicConfig(
+    level=logging.INFO,
+    format="%(asctime)s - %(levelname)s - %(message)s"
 )
 
+# ------------------------------------------------------------
+# Reproducibility (Seed)
+# ------------------------------------------------------------
+SEED = 42
+tf.random.set_seed(SEED)
+np.random.seed(SEED)
 
-# =========================
-# OPTIMIZER CONFIGURATION
-# =========================
-# Adam optimizer with fixed learning rate for baseline comparison
-optimizer = keras.optimizers.Adam(learning_rate=0.001)
+# ------------------------------------------------------------
+# Configuration
+# ------------------------------------------------------------
+MODEL_PATH = "models/steel_resnet50_final.h5"
+BEST_MODEL_PATH = "models/steel_resnet50_best.h5"
 
+ZIP_PATH = "data/dataset.zip"
+EXTRACT_PATH = "data/steel_data"
 
-# =========================
-# BASE MODEL (TRANSFER LEARNING)
-# =========================
-# Load pretrained ResNet50 without the classification head
-base_model = keras.applications.ResNet50(
-    include_top=False,
-    weights="imagenet",
-    input_shape=(224, 224, 3)
-)
-
-# Freeze all convolutional layers to use ResNet as a fixed feature extractor
-base_model.trainable = False
-
-
-# =========================
-# CLASSIFICATION HEAD
-# =========================
-# Custom classification head on top of the pretrained backbone
-inputs = base_model.input
-x = base_model.output
-
-# Global Average Pooling reduces spatial dimensions
-x = keras.layers.GlobalAveragePooling2D()(x)
-
-# Dropout for regularization
-x = keras.layers.Dropout(0.3)(x)
-
-# Final classification layer
-outputs = keras.layers.Dense(101, activation="softmax")(x)
-
-# Build the full model
-model = keras.models.Model(inputs=inputs, outputs=outputs)
+IMG_SIZE = (200, 200)
+BATCH_SIZE = 32
+EPOCHS = 20
+NUM_CLASSES = 6
 
 
-# =========================
-# MODEL COMPILATION
-# =========================
-model.compile(
-    loss="categorical_crossentropy",
-    optimizer=optimizer,
-    metrics=["accuracy"]
-)
+# ------------------------------------------------------------
+# ResNet-50 Builder
+# ------------------------------------------------------------
+def build_resnet50(input_shape, num_classes):
+    """
+    Builds a transfer learning model using pretrained ResNet-50.
+    """
+    base_model = keras.applications.ResNet50(
+        include_top=False,
+        weights="imagenet",
+        input_shape=input_shape
+    )
+
+    # Freeze convolutional layers
+    base_model.trainable = False
+
+    # Classification head
+    inputs = base_model.input
+    x = base_model.output
+    x = keras.layers.GlobalAveragePooling2D()(x)
+    x = keras.layers.Dropout(0.3)(x)
+    outputs = keras.layers.Dense(num_classes, activation="softmax")(x)
+
+    model = keras.Model(inputs, outputs, name="ResNet50_TransferLearning")
+    return model
 
 
-# =========================
-# TRAINING
-# =========================
-# Train only the classification head while keeping the backbone frozen
-history = model.fit(
-    train_generator,
-    epochs=10,
-    validation_data=val_generator 
-)
+# ------------------------------------------------------------
+# Main Execution
+# ------------------------------------------------------------
+if __name__ == "__main__":
+    logging.info("Initializing data pipeline...")
 
+    pipeline = DataPipeline(
+        ZIP_PATH,
+        EXTRACT_PATH,
+        img_size=IMG_SIZE,
+        batch_size=BATCH_SIZE
+    )
+    train_data, val_data, test_data = pipeline.running_engine()
 
-# =========================
-# EVALUATION
-# =========================
-# Evaluate model performance on unseen test data
-model.evaluate(X_test, Y_test)
+    # --------------------------------------------------------
+    # Model initialization
+    # --------------------------------------------------------
+    if os.path.exists(MODEL_PATH):
+        logging.info(f"Loading existing model from {MODEL_PATH}...")
+        model = keras.models.load_model(MODEL_PATH)
+    else:
+        logging.info("Creating new ResNet-50 transfer learning model...")
+        model = build_resnet50(
+            input_shape=(*IMG_SIZE, 3),
+            num_classes=NUM_CLASSES
+        )
+        model.compile(
+            optimizer=keras.optimizers.Adam(learning_rate=0.001),
+            loss="categorical_crossentropy",
+            metrics=["accuracy"]
+        )
 
-# Display model architecture summary
-model.summary()
+    # --------------------------------------------------------
+    # Callbacks (Production-Ready)
+    # --------------------------------------------------------
+    callbacks = [
+        keras.callbacks.ModelCheckpoint(
+            BEST_MODEL_PATH,
+            monitor="val_accuracy",
+            save_best_only=True,
+            verbose=1
+        ),
+        keras.callbacks.EarlyStopping(
+            monitor="val_loss",
+            patience=5,
+            restore_best_weights=True
+        )
+    ]
 
+    # --------------------------------------------------------
+    # Training
+    # --------------------------------------------------------
+    logging.info("Starting training...")
+    history = model.fit(
+        train_data,
+        epochs=EPOCHS,
+        validation_data=val_data,
+        callbacks=callbacks
+    )
 
-# =========================
-# LEARNING CURVES
-# =========================
-fig, ax1 = plt.subplots()
+    # --------------------------------------------------------
+    # Evaluation
+    # --------------------------------------------------------
+    logging.info("Evaluating on test set...")
+    loss, accuracy = model.evaluate(test_data)
+    logging.info(f"Test Loss: {loss:.4f}, Test Accuracy: {accuracy:.4f}")
 
-color = 'tab:blue'
-ax1.set_xlabel('Epoch')
-ax1.set_ylabel('Accuracy', color=color)
-ax1.plot(history.history["accuracy"], label="Train Acc", color='tab:blue')
-ax1.plot(history.history["val_accuracy"], label="Val Acc", color='tab:cyan')
-ax1.tick_params(axis='y', labelcolor=color)
+    # --------------------------------------------------------
+    # Save final model
+    # --------------------------------------------------------
+    os.makedirs("models", exist_ok=True)
+    model.save(MODEL_PATH)
+    logging.info(f"Final model saved to {MODEL_PATH}")
 
-ax2 = ax1.twinx()  
-color = 'tab:red'
-ax2.set_ylabel('Loss', color=color)
-ax2.plot(history.history["loss"], label="Train Loss", color='tab:red')
-ax2.plot(history.history["val_loss"], label="Val Loss", color='tab:orange')
-ax2.tick_params(axis='y', labelcolor=color)
+    # --------------------------------------------------------
+    # Visualization
+    # --------------------------------------------------------
+    fig, ax1 = plt.subplots(figsize=(10, 6))
 
-fig.tight_layout()
-plt.title("Learning Curve – ResNet50 Baseline")
-fig.legend(loc="upper right", bbox_to_anchor=(1,1), bbox_transform=ax1.transAxes)
-plt.show()
+    ax1.set_xlabel("Epoch")
+    ax1.set_ylabel("Accuracy", color="tab:blue")
+    ax1.plot(history.history["accuracy"], label="Train Acc", color="tab:blue", linewidth=2)
+    ax1.plot(history.history["val_accuracy"], label="Val Acc", color="tab:cyan", linestyle="--")
+    ax1.tick_params(axis="y", labelcolor="tab:blue")
+
+    ax2 = ax1.twinx()
+    ax2.set_ylabel("Loss", color="tab:red")
+    ax2.plot(history.history["loss"], label="Train Loss", color="tab:red", alpha=0.5)
+    ax2.plot(history.history["val_loss"], label="Val Loss", color="tab:orange", linestyle="--")
+    ax2.tick_params(axis="y", labelcolor="tab:red")
+
+    plt.title("Steel Defect Detection: ResNet-50 Transfer Learning (Production)")
+    fig.legend(loc="upper right", bbox_to_anchor=(0.9, 0.9))
+    plt.grid(True, alpha=0.3)
+    plt.tight_layout()
+    plt.show()
