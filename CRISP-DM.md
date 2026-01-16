@@ -74,12 +74,12 @@ Implementation: Developed using tf.keras.applications.ResNet50.
 
 Strategy: Fine-tuning the top layers while keeping the ImageNet pre-trained weights in the base frozen to act as a universal feature extractor.
 
-### Custom ResNet (Built from Scratch) 
+### Model 2: Custom ResNet (Built from Scratch) 
 This model represents a deep-dive into the architecture's mechanics. Instead of using a pre-packaged model, we implemented the Residual Learning logic manually.
 
 The architecture is built upon a custom ResidualBlock component. The implementation focuses on the mathematical foundation of skip connections:
 
-1. The Main Path (F(x)$: Consists of a series of $3 \times 3$ and $1 \times 1$ Convolutional layers, Batch Normalization, and ReLU activations.
+1. The Main Path F(x): Consists of a series of $3 \times 3$ and $1 \times 1$ Convolutional layers, Batch Normalization, and ReLU activations.
 
 2. The Skip Connection (Identity): A parallel path that carries the original input $x$.
    
