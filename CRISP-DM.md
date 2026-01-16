@@ -63,3 +63,32 @@ To ensure high model performance and robustness, a custom automated pipeline was
 
 3. Performance Optimization: Leveraging the tf.data API, the pipeline uses Prefetching and Autotuning. This ensures the CPU prepares the next batch of images while the GPU is busy training, significantly reducing training time.
 
+# Modeling
+In this project, we evaluate two different approaches to solving the surface defect classification problem: a high-level Transfer Learning approach and a low-level Custom Residual implementation.
+
+###  Model 1: ResNet-50 (Transfer Learning)
+
+Architecture: Standard ResNet-50 backbone with a custom-added classification head.
+
+Implementation: Developed using tf.keras.applications.ResNet50.
+
+Strategy: Fine-tuning the top layers while keeping the ImageNet pre-trained weights in the base frozen to act as a universal feature extractor.
+
+### Custom ResNet (Built from Scratch) 
+This model represents a deep-dive into the architecture's mechanics. Instead of using a pre-packaged model, we implemented the Residual Learning logic manually.
+
+The architecture is built upon a custom ResidualBlock component. The implementation focuses on the mathematical foundation of skip connections:
+
+1. The Main Path ($F(x)$): Consists of a series of $3 \times 3$ and $1 \times 1$ Convolutional layers, Batch Normalization, and ReLU activations.
+2. The Skip Connection (Identity): A parallel path that carries the original input $x$.
+3. Projection Shortcut: A crucial technical detail in our script. When spatial dimensions decrease (stride $> 1$), we apply a $1 \times 1$ convolution to the shortcut path to ensure the tensors match for the final addition.
+4. Integration: The final output is calculated as $y = \text{ReLU}(F(x) + \text{Shortcut}(x))$.
+
+
+
+
+
+
+
+
+
