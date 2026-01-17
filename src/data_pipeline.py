@@ -115,12 +115,18 @@ class DataPipeline:
 
         val_data = tf.keras.utils.image_dataset_from_directory(
             val_path, image_size=self.img_size, batch_size=self.batch_size,
-            label_mode="categorical"
+            label_mode="categorical",
+            validation_split=0.5, 
+            subset="training", 
+            seed=123 
         )
 
         test_data = tf.keras.utils.image_dataset_from_directory(
-            test_path, image_size=self.img_size, batch_size=self.batch_size,
-            label_mode="categorical"
+            val_path, image_size=self.img_size, batch_size=self.batch_size,
+            label_mode="categorical",
+            validation_split=0.5,
+            subset="validation", 
+            seed=123
         )
 
         # Preprocessing layers
