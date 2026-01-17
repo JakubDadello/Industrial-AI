@@ -1,0 +1,14 @@
+services:
+  industrial-ai:
+    build: .
+    image: industrial-ai_api:latest
+    container_name: industrial_ai_container
+    ports:
+      - "8000:8000"
+    restart: always
+    environment:
+       - APP_ENV=production
+
+
+
+
