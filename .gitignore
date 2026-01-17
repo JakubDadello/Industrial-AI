@@ -13,9 +13,6 @@ models/*.h5
 models/*.keras
 *.h5
 
-# Visualizations
-reports/*.png
-
 # Environment and IDE
 .ipynb_checkpoints/
 venv/
