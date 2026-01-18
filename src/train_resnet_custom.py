@@ -35,7 +35,7 @@ EXTRACT_PATH = "data/steel_data"
 
 IMG_SIZE = (200, 200)
 BATCH_SIZE = 32
-EPOCHS = 20
+EPOCHS = 10
 NUM_CLASSES = 6
 
 
@@ -101,7 +101,7 @@ def build_custom_resnet(input_shape, num_classes):
     x = keras.layers.BatchNormalization()(x)
     x = keras.layers.Activation("relu")(x)
     x = keras.layers.MaxPooling2D(pool_size=3, strides=2, padding="same")(x)
-
+    
     # ResNet-34 configuration
     res_config = [
         (64, 3),
@@ -119,6 +119,7 @@ def build_custom_resnet(input_shape, num_classes):
 
     # Classification head
     x = keras.layers.GlobalAveragePooling2D()(x)
+    x = keras.layers.Dropout(0.5)(x)
     outputs = keras.layers.Dense(num_classes, activation="softmax")(x)
 
     return keras.Model(inputs, outputs, name="Custom_ResNet_Steel")
