@@ -1,3 +1,3 @@
 This folder contains:
-- dataset.zip: original Caltech-101 compressed data
+- dataset.zip: original Metallic Surface Defect Detector compressed data
 - kaggle_dataset: extracted images per class
