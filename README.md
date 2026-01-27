@@ -24,9 +24,9 @@ To run this project locally, you can use either Docker (recommended) or a standa
 * **Install requirements:**
   ```bash
   pip install -r requirements.txt
-* **Launch FastAPI server:**
+* **Launch BentoML server:**
   ```bash
-  uvicorn src.main:app --host 0.0.0.0 --port 8000
+  bentoml serve app.service:industrial-ai_service --port 3000
   
 ## Repository Structure
 - `data/` – contains raw compressed data and fully extracted datasets (see `data/README.md` for details)
