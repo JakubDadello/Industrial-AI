@@ -29,7 +29,9 @@ To run this project locally, you can use either Docker (recommended) or a standa
   bentoml serve app.service:industrial-ai_service --port 3000
   
 ## Repository Structure
+- `app` - production-ready deployment logic and API implementation (BentoML).
 - `data/` – contains raw compressed data and fully extracted datasets (see `data/README.md` for details)
+- `model` - serialized pre-trained Keras model artifacts.
 - `notebooks/` – Jupyter notebooks for preprocessing (including data ingestion, data extraction and data loading), exploratory data analysis, and modeling experiments
 - `src/` – Python scripts for data preprocessing, model definition, training, and utility functions
 - `results/` – saved model weights, training logs, plots, and evaluation metrics
