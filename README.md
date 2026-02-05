@@ -40,9 +40,10 @@ To run this project locally, you can use either Docker (recommended) or a standa
 
 ## Tech Stack
 
-- Language: Python 3.13.1
-- Libraries: Scikit-learn, Pandas, NumPy, Matplotlib, TensorFlow 
+- Language: Python 3.11
+- Libraries: Scikit-learn, Pandas, NumPy, Matplotlib, TensorFlow (Keras API)
 - Tools: Canva (Presentation)
+- Backend & Deployment: BentoML, Docker, Uvicorn
 
 
 ## Models Architecture & Strategy
