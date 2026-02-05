@@ -103,11 +103,11 @@ class DataPipeline:
         val_path = os.path.join(self.extract_to, "valid")
         test_path = os.path.join(self.extract_to, "test")
 
-        # Minimal validation
+        # --- Minimal validation ---
         if not os.path.exists(train_path):
             raise RuntimeError("Training folder is missing. Dataset not prepared correctly.")
 
-        # Load datasets
+        # --- Load datasets ---
         train_data = tf.keras.utils.image_dataset_from_directory(
             train_path, image_size=self.img_size, batch_size=self.batch_size,
             label_mode="categorical"
@@ -129,21 +129,21 @@ class DataPipeline:
             seed=123
         )
 
-        # Preprocessing layers
+        # --- Preprocessing layers ---
         rescaler = tf.keras.layers.Rescaling(1.0 / 255)
         augmentation = tf.keras.Sequential([
             tf.keras.layers.RandomFlip("horizontal_and_vertical"),
             tf.keras.layers.RandomRotation(0.2)
         ])
 
-        # Shuffle + augmentation for training
+        # --- Shuffle & augmentation for training ---
         train_data = train_data.shuffle(1000)
         train_data = train_data.map(
             lambda x, y: (augmentation(x, training=True), y),
             num_parallel_calls=tf.data.AUTOTUNE
         )
 
-        # Rescaling for all datasets
+        # --- Rescaling for all datasets ---
         train_data = train_data.map(
             lambda x, y: (rescaler(x), y),
             num_parallel_calls=tf.data.AUTOTUNE
@@ -157,11 +157,11 @@ class DataPipeline:
             num_parallel_calls=tf.data.AUTOTUNE
         )
 
-        # Cache validation & test for performance
+        # --- Cache validation & test for performance ---
         val_data = val_data.cache()
         test_data = test_data.cache()
 
-        # Prefetch for performance
+        # --- Prefetch for performance ---
         return (
             train_data.prefetch(tf.data.AUTOTUNE),
             val_data.prefetch(tf.data.AUTOTUNE),
