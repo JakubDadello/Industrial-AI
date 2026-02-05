@@ -52,10 +52,10 @@ def build_resnet50(input_shape, num_classes):
         input_shape=input_shape
     )
 
-    # Freeze convolutional layers
+    # --- Freeze convolutional layers ---
     base_model.trainable = False
 
-    # Classification head
+    # --- Classification head ---
     inputs = base_model.input
     x = base_model.output
     x = keras.layers.GlobalAveragePooling2D()(x)
