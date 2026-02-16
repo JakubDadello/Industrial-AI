@@ -57,12 +57,9 @@ def build_resnet50(input_shape, num_classes):
 
     # --- Preprocessing Layer ---
     # Specifically designed for ResNet50: 
-    # Converts RGB to BGR and centers data by subtracting the ImageNet mean.
-    # This replaces manual rescaling (1/255) which is incompatible with ResNet50.
     x = keras.applications.resnet50.preprocess_input(inputs)
 
     # --- Pretrained Backbone ---
-    # Load ResNet50 with weights pretrained on ImageNet, excluding the top dense layers.
     base_model = keras.applications.ResNet50(
         include_top=False,
         weights="imagenet",
