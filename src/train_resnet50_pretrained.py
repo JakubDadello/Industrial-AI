@@ -35,7 +35,7 @@ EXTRACT_PATH = "data/steel_data"
 
 IMG_SIZE = (200, 200)
 BATCH_SIZE = 32
-EPOCHS = 20
+EPOCHS = 10
 NUM_CLASSES = 6
 
 
@@ -44,27 +44,53 @@ NUM_CLASSES = 6
 # ------------------------------------------------------------
 def build_resnet50(input_shape, num_classes):
     """
-    Builds a transfer learning model using pretrained ResNet-50.
+    Builds a transfer learning model using a pretrained ResNet-50 backbone.
+    
+    This implementation uses the Keras Functional API to include preprocessing 
+    directly within the model graph, ensuring portability for production 
+    deployments (e.g., AWS SageMaker).
     """
+    
+    # --- Input Layer ---
+    # Accepts raw pixel values (0-255) as defined in the DataPipeline
+    inputs = keras.Input(shape=input_shape)
+
+    # --- Preprocessing Layer ---
+    # Specifically designed for ResNet50: 
+    # Converts RGB to BGR and centers data by subtracting the ImageNet mean.
+    # This replaces manual rescaling (1/255) which is incompatible with ResNet50.
+    x = keras.applications.resnet50.preprocess_input(inputs)
+
+    # --- Pretrained Backbone ---
+    # Load ResNet50 with weights pretrained on ImageNet, excluding the top dense layers.
     base_model = keras.applications.ResNet50(
         include_top=False,
         weights="imagenet",
         input_shape=input_shape
     )
 
-    # --- Freeze convolutional layers ---
+    # Freeze the convolutional base to prevent weights from being updated 
+    # during the initial training phase (Transfer Learning).
     base_model.trainable = False
 
-    # --- Classification head ---
-    inputs = base_model.input
-    x = base_model.output
+    # Pass the preprocessed input through the frozen backbone.
+    # 'training=False' ensures BatchNormalization layers run in inference mode.
+    x = base_model(x, training=False) 
+
+    # --- Classification Head ---
+    # Convert 4D feature maps to a 2D feature vector.
     x = keras.layers.GlobalAveragePooling2D()(x)
+    
+    # Regularization layer to prevent overfitting.
     x = keras.layers.Dropout(0.3)(x)
+    
+    # Final output layer with Softmax activation for multi-class classification.
     outputs = keras.layers.Dense(num_classes, activation="softmax")(x)
 
-    model = keras.Model(inputs, outputs, name="ResNet50_TransferLearning")
+    # Instantiate the final Keras Model.
+    model = keras.Model(inputs, outputs, name="ResNet50_TransferLearning_Production")
+    
     return model
-
 
 # ------------------------------------------------------------
 # Main Execution
@@ -93,7 +119,7 @@ if __name__ == "__main__":
             num_classes=NUM_CLASSES
         )
         model.compile(
-            optimizer=keras.optimizers.Adam(learning_rate=1e-4),
+            optimizer=keras.optimizers.Adam(learning_rate=1e-3),
             loss="categorical_crossentropy",
             metrics=["accuracy"]
         )

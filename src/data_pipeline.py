@@ -130,7 +130,6 @@ class DataPipeline:
         )
 
         # --- Preprocessing layers ---
-        rescaler = tf.keras.layers.Rescaling(1.0 / 255)
         augmentation = tf.keras.Sequential([
             tf.keras.layers.RandomFlip("horizontal_and_vertical"),
             tf.keras.layers.RandomRotation(0.2)
@@ -140,20 +139,6 @@ class DataPipeline:
         train_data = train_data.shuffle(1000)
         train_data = train_data.map(
             lambda x, y: (augmentation(x, training=True), y),
-            num_parallel_calls=tf.data.AUTOTUNE
-        )
-
-        # --- Rescaling for all datasets ---
-        train_data = train_data.map(
-            lambda x, y: (rescaler(x), y),
-            num_parallel_calls=tf.data.AUTOTUNE
-        )
-        val_data = val_data.map(
-            lambda x, y: (rescaler(x), y),
-            num_parallel_calls=tf.data.AUTOTUNE
-        )
-        test_data = test_data.map(
-            lambda x, y: (rescaler(x), y),
             num_parallel_calls=tf.data.AUTOTUNE
         )
 
@@ -167,7 +152,6 @@ class DataPipeline:
             val_data.prefetch(tf.data.AUTOTUNE),
             test_data.prefetch(tf.data.AUTOTUNE)
         )
-
 
 # ---------------------------------------------------------
 # Example usage
