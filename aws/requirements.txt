@@ -1,0 +1,16 @@
+# --- Core Data Science ---
+numpy>=2.0.0
+pandas>=2.2.0
+scikit-learn>=1.5.0
+joblib>=1.4.0
+
+# --- Deep Learning ---
+# TensorFlow 2.16+ is required for native Keras 3 support
+tensorflow>=2.16.1
+keras>=3.3.0
+
+# --- Web API & Deployment ---
+bentoml>=1.4.34
+
+# --- Visualization & Reports ---
+matplotlib>=3.8.0
