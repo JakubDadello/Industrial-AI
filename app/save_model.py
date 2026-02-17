@@ -5,11 +5,11 @@ import tensorflow as tf
 import bentoml
 from tensorflow import keras
 
-# ==============================================================================
+# -----------------------------------------------------------------------------
 # PRODUCTION MODEL MIGRATION SCRIPT (Keras 3 + BentoML)
 # Project: Steel Defect Detection - ResNet50 Transfer Learning
 # Goal: Convert legacy .h5 weights into a clean BentoML SavedModel
-# ==============================================================================
+# -----------------------------------------------------------------------------
 
 # --- Configuration ---
 BASE_DIR = pathlib.Path(__file__).parent.absolute()
