@@ -12,7 +12,6 @@ from tensorflow import keras
 # ==============================================================================
 
 # --- Configuration ---
-# Using absolute paths to ensure the script is "Remote-Ready"
 BASE_DIR = pathlib.Path(__file__).parent.absolute()
 WEIGHTS_PATH = os.path.join(BASE_DIR, "../","models", "resnet50_pretrained_best.h5")
 EXPORT_DIR = os.path.join(BASE_DIR, "temp_production_model")
@@ -78,14 +77,12 @@ def migrate():
         # 4. BENTOML REGISTRATION
         print(f"[*] Reloading clean graph for BentoML registration...")
         
-        # Wczytujemy wyeksportowany model jako czysty obiekt TensorFlow
-        # To gwarantuje, że BentoML dostanie obiekt typu 'Trackable'
         reloaded_model = tf.saved_model.load(EXPORT_DIR)
 
         print(f"[*] Finalizing registration in BentoML Model Store...")
         bento_model = bentoml.tensorflow.save_model(
             MODEL_NAME,
-            reloaded_model, # Przekazujemy wczytany, czysty obiekt
+            reloaded_model, 
             signatures={"__call__": {"batchable": True, "batch_dim": 0}},
             metadata={
                 "training_src": "resnet50_pretrained_best.h5",
