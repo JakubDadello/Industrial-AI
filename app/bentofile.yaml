@@ -1,0 +1,16 @@
+service: "service:svc"
+
+labels:
+  project: industrial_defect_detector
+
+include:
+  - "service.py"
+
+python: 
+  packages: 
+    - tensorflow 
+    - numpy 
+    - opencv-python 
+    - pillow 
+    - bentoml
+
