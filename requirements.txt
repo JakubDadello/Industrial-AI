@@ -14,3 +14,8 @@ bentoml>=1.4.34
 
 # --- Visualization & Reports ---
 matplotlib>=3.8.0
+
+# --- Image Processing & Hugging Face ---
+opencv-python-headless>=4.13.0.92
+gradio>=6.6.0
+pillow>=11.2.1
