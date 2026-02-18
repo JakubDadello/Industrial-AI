@@ -2,6 +2,9 @@
 __pycache__/
 *.py[cod]
 
+# Folders
+temp_production_/
+
 # Data and Datasets
 data/dataset.zip
 data/steel_data/
