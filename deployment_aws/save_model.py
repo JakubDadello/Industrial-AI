@@ -70,7 +70,7 @@ def migrate():
         
         model.export(EXPORT_DIR) 
 
-        # 4. BentoML Registration 
+        # 5. BentoML Registration 
         print(f"[*] Reloading clean graph for BentoML registration...")
         
         reloaded_model = tf.saved_model.load(EXPORT_DIR)
