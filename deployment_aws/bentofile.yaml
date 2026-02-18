@@ -13,4 +13,5 @@ python:
     - opencv-python-headless 
     - pillow 
     - bentoml
+    - aws-lambda-powertools
 
