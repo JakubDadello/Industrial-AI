@@ -92,7 +92,7 @@ The architecture is built upon a custom ResidualBlock component. The implementat
 ###  Model 1: ResNet-50 (Transfer Learning)
 
 ![ResNet50 pretrained](/reports/history_resnet50_pretrained.png)
-1. Behavior: the ResNet-50 model (pre-trained on ImageNet) showed much smoother and more professional convergence over 20 epochs.
+1. Behavior: the ResNet-50 model (pre-trained on ImageNet) showed much smoother and more professional convergence over 10 epochs.
 
 2. Metrics: There was a clear convergence between training and validation accuracy. Most importantly, the loss functions (both training and validation) showed a systematic and consistent decline.
 
@@ -115,11 +115,11 @@ Based on the stability of the loss curves and the reliability of the validation 
 # Deployment
 While the project demonstrates the potential for Automated Quality Control, the current iteration is classified as a Prototype (Proof of Concept). For a full-scale industrial deployment, the following requirements must be met to ensure production-grade reliability:
 
-1. Dataset Expansion: The current model achieved a peak accuracy of approximately 45%. This indicates that the current training set is insufficient to capture the full variance of steel defects in a real-world environment. A significantly larger and more diverse dataset is required to reach the high-precision targets defined in the Accuracy goal.
+1. Dataset Expansion: The current model has achieved a peak accuracy of ~99%, suggesting that the existing training dataset does not fully capture the variability of steel defects in real-world conditions. To meet the high-precision targets outlined in the Accuracy goal, a significantly larger and more diverse dataset is required. Expanding the dataset will improve generalization and robustness of the model in production scenarios.
 
-2. Extended Training Cycles: Future iterations will require a higher number of training epochs combined with more powerful compute resources to allow the ResNet architecture to converge fully without underfitting.
+2. Project Development: 
 
-3. Advanced Data Augmentation: To improve the model's robustness against different lighting conditions and angles on the production line, a more rigorous data augmentation pipeline (including elastic transforms and color jittering) should be implemented.
+3. Cloud Deployment:
 
-4. Integration with Edge Devices: The final step involves porting the model to hardware like NVIDIA Jetson. However, this will only be feasible once the accuracy hits the industry-standard threshold (typically >90% for critical quality control).
+4. Integration with Edge Devices: The final step involves porting the model to hardware like NVIDIA Jetson. 
 
