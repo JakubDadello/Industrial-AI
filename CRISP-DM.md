@@ -121,5 +121,5 @@ While the project demonstrates the potential for Automated Quality Control, the 
 
 3. Cloud Deployment:
 
-4. Integration with Edge Devices: The final step involves porting the model to hardware like NVIDIA Jetson. 
+4. Enhance with Computer Vision:
 
