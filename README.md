@@ -24,9 +24,11 @@ Link to HuggingFace: https://huggingface.co/spaces/kejdixhug/steel_defect_detect
 ## Tech Stack
 
 - Language: Python 3.11
-- Libraries: Scikit-learn, Pandas, NumPy, Matplotlib, TensorFlow (Keras API)
-- Tools: Canva (Presentation)
-- Backend & Deployment: BentoML, Docker, Uvicorn
+- Libraries: Scikit-learn, Pandas, NumPy, Matplotlib, TensorFlow, Keras 
+- Backend & Deployment: BentoML, Gradio
+- Conterization & Deployment: Docker
+- Cloud Technology: Amazon Web Service (AWS)
+- "Proof of concept" Deployment: HuggingFace
 
 
 ## Models Architecture & Strategy
