@@ -1,0 +1,106 @@
+AWSTemplateFormatVersion: 2010-09-09
+
+Resources:
+  
+  KinesisVideoStream:
+    Type: AWS::KinesisVideo::Stream
+    Properties:
+      DataRetentionInHours: 20
+      Name: !Sub "${AWS::StackName}-kinesis-vs"
+
+
+# ============================================================
+# Storages and Databases 
+# ============================================================
+  S3Bucket:
+    Type: AWS::S3::Bucket
+    Properties:
+      BucketName: !Sub "${AWS::StackName}-data-bucket"
+
+  RDSInstance:
+    Type: AWS::RDS::DBInstance
+    Properties:
+      AllocatedStorage: "20"
+      DBInstanceClass: db.t3.micro
+      Engine: postgres
+      MasterUsername: infra-admin
+      MasterUserPassword: infra-admin-password 
+      VPCSecurityGroups: #we are waiting for VPC Net Configuration 
+      DBSubnetGroupName: #we are waiting for VPC Net Configuration 
+      PubliclyAccessible: false 
+
+# ============================================================
+# Container Registry and Services  
+# ============================================================
+  ECRPreprocessingContainer:
+    Type: AWS::ECR::Repository
+    Properties:
+      RepositoryName: !Sub "${AWS::StackName}-preprocessing"
+      ImageTagMutability: MUTABLE 
+
+  ECRTrainingContainer:
+    Type: AWS::ECR::Repository
+    Properties:
+      RepositoryName: !Sub "${AWS::StackName}-training"
+      ImageTagMutability: MUTABLE 
+
+  ECSCluster:
+    Type: AWS::ECS::Cluster
+    Properties:
+      ClusterName: industrial-ai-cluster
+
+  TaskDefinition:
+    Type: AWS::ECS::TaskDefinition
+    Properties: 
+      ContainerDefinitions: 
+        - Name: preprocessing-traning-container
+          Image: !Ref ContainerImage
+          Essential: true
+          PortMappings:
+            - ContainerPort: 80
+      Cpu: "2048"
+      ExecutionRoleArn: arn:aws:iam::YOUR_ACCOUNT_ID:role/ecsTaskExecutionRole 
+      Family: preprocessing-training-task
+      Memory: "2048"
+      NetworkMode: awsvpc
+      RequiresCompatibilities:
+        - FARGATE
+
+  ECSService:
+    Type: AWS::ECS::Service
+    DependsOn: ECSCluster
+    Properties:
+      Cluster: !Ref ECSCluster
+      DesiredCount: 1 
+      LaunchType: FARGATE
+      TaskDefinition: !Ref TaskDefinition
+      NetworkConfiguration: #we are waiting for VPC Net Configuration 
+
+
+# ============================================================
+# Machine Learning 
+# ============================================================
+Preprocessi
+
+
+
+
+Outputs:
+  KinesisVSName:
+    Value: !Ref KinesisVideoStream
+  
+  S3BucketName:
+    Value: !Ref S3Bucket
+
+  ECSClusterName:
+    Value: !Ref ECSCluster
+  
+  ECSServiceName:
+    Value: !Ref ECSService 
+
+  
+
+  
+  
+
+  
