@@ -117,7 +117,16 @@ While the project demonstrates the potential for Automated Quality Control, the 
 
 „I designed full production architecture, implemented IaC, and selectively deployed components due to cloud cost constraints (Kinesis/SageMaker), focusing on validating core system behavior and architecture decisions.”
 
+## Deployment architecture
 
+### High-level deployment diagram with AWS icons (Serverless Variant) 
+
+### High-level deployment diagram with AWS icons (Server Variant) 
+
+## Justification 
+
+
+## Forward steps 
 1. Dataset Expansion: The current model has achieved a peak accuracy of ~99%, suggesting that the existing training dataset does not fully capture the variability of steel defects in real-world conditions. To meet the high-precision targets outlined in the Accuracy goal, a significantly larger and more diverse dataset is required. Expanding the dataset will improve generalization and robustness of the model in production scenarios.
 
 2. Project Development: 
