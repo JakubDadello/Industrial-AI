@@ -115,6 +115,9 @@ Based on the stability of the loss curves and the reliability of the validation 
 # Deployment
 While the project demonstrates the potential for Automated Quality Control, the current iteration is classified as a Prototype (Proof of Concept). For a full-scale industrial deployment, the following requirements must be met to ensure production-grade reliability:
 
+„I designed full production architecture, implemented IaC, and selectively deployed components due to cloud cost constraints (Kinesis/SageMaker), focusing on validating core system behavior and architecture decisions.”
+
+
 1. Dataset Expansion: The current model has achieved a peak accuracy of ~99%, suggesting that the existing training dataset does not fully capture the variability of steel defects in real-world conditions. To meet the high-precision targets outlined in the Accuracy goal, a significantly larger and more diverse dataset is required. Expanding the dataset will improve generalization and robustness of the model in production scenarios.
 
 2. Project Development: 
