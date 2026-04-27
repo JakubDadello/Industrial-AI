@@ -115,7 +115,7 @@ Based on the stability of the loss curves and the reliability of the validation 
 # Deployment
 While the project demonstrates the potential for Automated Quality Control, the current iteration is classified as a Prototype (Proof of Concept). For a full-scale industrial deployment, the following requirements must be met to ensure production-grade reliability:
 
-„I designed full production architecture, implemented IaC, and selectively deployed components due to cloud cost constraints (Kinesis/SageMaker), focusing on validating core system behavior and architecture decisions.”
+Deployment on AWS: I designed full production architecture, implemented IaC, and selectively deployed components due to cloud cost constraints (Kinesis/SageMaker), focusing on validating core system behavior and architecture decisions.
 
 ## Deployment architecture
 
