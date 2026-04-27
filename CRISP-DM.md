@@ -123,7 +123,7 @@ Deployment on AWS: I designed full production architecture, implemented IaC, and
 ![Serverless_high-level_diagram](/reports/Serverless_high-level_diagram.png)
 
 ### High-level deployment diagram with AWS icons (Server Variant) 
-![Server_high-level_diagram](/reports/High_level_diagram.drawio.png)
+![Server_high-level_diagram](/reports/Server_high-level_diagram.drawio.png)
 
 ## Justification 
 
