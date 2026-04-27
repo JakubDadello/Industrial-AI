@@ -127,7 +127,7 @@ While the project demonstrates the potential for Automated Quality Control, the 
 
 
 ## Forward steps 
-1. Dataset Expansion: The current model has achieved a peak accuracy of ~99%, suggesting that the existing training dataset does not fully capture the variability of steel defects in real-world conditions. To meet the high-precision targets outlined in the Accuracy goal, a significantly larger and more diverse dataset is required. Expanding the dataset will improve generalization and robustness of the model in production scenarios.
+1. Dataset Expansion:
 
 2. Project Development: 
 
