@@ -9,6 +9,8 @@ Implemented and compared a custom ResNet architecture with a fine-tuned ResNet50
 Developed data preprocessing workflows, trained and evaluated models, and analyzed performance to optimize defect detection accuracy.
 
 ## How to Run
+
+Run the Proof of concept: 
 Link to HuggingFace: https://huggingface.co/spaces/kejdixhug/steel_defect_detector
   
 ## Repository Structure
