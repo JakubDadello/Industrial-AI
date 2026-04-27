@@ -1,16 +1,39 @@
 AWSTemplateFormatVersion: 2010-09-09
 
+Parameters:
+  ImageUri:
+    Type: String
+
 Resources:
-  
+# ============================================================
+# MESSAGING AND STREAMING 
+# ============================================================
   KinesisVideoStream:
     Type: AWS::KinesisVideo::Stream
     Properties:
       DataRetentionInHours: 20
+      MediaType: "image/jpeg"
       Name: !Sub "${AWS::StackName}-kinesis-vs"
-
+      Tags: 
+        - Key: Project
+          Value: Industrial-AI
+  
+  SimpleQueueService:
+    Type : "AWS::SQS::Queue"
+    Properties: 
+       QueueName: !Sub "${AWS::StackName}-alerts-queue"
+       VisibilityTimeout: 30
+       MessageRetentionPeriod: 1209600  #dedicated for industrial system 
+       SqsManagedSseEnabled: true #encryption at-rest 
+       RedrivePolicy:
+        deadLetterTargetArn : !GetAtt DLQ.Arn
+        maxReceiveCount : 5 #five attempts
+       Tags:
+        - Key: Project
+          Value: Industrial-AI
 
 # ============================================================
-# Storages and Databases 
+# STORAGE AND DATABASES
 # ============================================================
   S3Bucket:
     Type: AWS::S3::Bucket
@@ -32,28 +55,52 @@ Resources:
 # ============================================================
 # Container Registry and Services  
 # ============================================================
-  ECRPreprocessingContainer:
+  ECRInferenceContainer:
     Type: AWS::ECR::Repository
     Properties:
       RepositoryName: !Sub "${AWS::StackName}-preprocessing"
+      ImageScanningConfiguration:
+          ScanOnPush: true
       ImageTagMutability: MUTABLE 
-
-  ECRTrainingContainer:
-    Type: AWS::ECR::Repository
-    Properties:
-      RepositoryName: !Sub "${AWS::StackName}-training"
-      ImageTagMutability: MUTABLE 
+      LifecyclePolicy: 
+          LifecyclePolicyText:  |
+            {
+              "rules": [
+                {
+                  "rulePriority": 1,
+                  "description": "Keep only last 5 images",
+                  "selection": {
+                  "tagStatus": "any",
+                  "countType": "imageCountMoreThan",
+                  "countNumber": 5
+                },
+                "action": { "type": "expire" }
+                }
+              ]
+            }
 
   ECSCluster:
     Type: AWS::ECS::Cluster
     Properties:
       ClusterName: industrial-ai-cluster
 
+  ECSCapacityProviderAssociation:    
+    Type: AWS::ECS::ClusterCapacityProviderAssociations
+    Properties:
+      Cluster: !Ref ECSCluster
+      CapacityProviders: 
+          - FARGATE
+          - FARGATE_SPOT
+      DefaultCapacityProviderStrategy: 
+        - CapacityProvider: FARGATE
+          Base: 1
+          Weight: 1
+
   TaskDefinition:
     Type: AWS::ECS::TaskDefinition
     Properties: 
       ContainerDefinitions: 
-        - Name: preprocessing-traning-container
+        - Name: inference_process 
           Image: !Ref ContainerImage
           Essential: true
           PortMappings:
@@ -80,10 +127,6 @@ Resources:
 # ============================================================
 # Machine Learning 
 # ============================================================
-Preprocessi
-
-
-
 
 Outputs:
   KinesisVSName:
@@ -97,10 +140,3 @@ Outputs:
   
   ECSServiceName:
     Value: !Ref ECSService 
-
-  
-
-  
-  
-
-  
