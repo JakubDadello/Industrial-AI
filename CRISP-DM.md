@@ -120,8 +120,10 @@ While the project demonstrates the potential for Automated Quality Control, the 
 ## Deployment architecture
 
 ### High-level deployment diagram with AWS icons (Serverless Variant) 
+![Serverless_high-level_diagram](/reports/Serveress_high-level_diagram.png)
 
 ### High-level deployment diagram with AWS icons (Server Variant) 
+![Server_high-level_diagram](/reports/High_level_diagram.drawio.png)
 
 ## Justification 
 
