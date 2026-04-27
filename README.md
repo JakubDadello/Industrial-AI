@@ -10,13 +10,13 @@ Developed data preprocessing workflows, trained and evaluated models, and analyz
 
 ## How to Run
 
-Run the Proof of concept: 
+Run the "Proof of concept": 
 Link to HuggingFace: https://huggingface.co/spaces/kejdixhug/steel_defect_detector
   
 ## Repository Structure
-- `app` - production-ready deployment logic and API implementation (BentoML).
+- `deployment_aws` -  contains the CloudFormation IaC used to provision the entire AWS backend and API implementation (BentoML).
 - `data/` – contains raw compressed data and fully extracted datasets (see `data/README.md` for details)
-- `model` - serialized pre-trained Keras model artifacts.
+- `models` - serialized pre-trained Keras model artifacts.
 - `notebooks/` – Jupyter notebooks for preprocessing (including data ingestion, data extraction and data loading), exploratory data analysis, and modeling experiments
 - `src/` – Python scripts for data preprocessing, model definition, training, and utility functions
 - `results/` – saved model weights, training logs, plots, and evaluation metrics
