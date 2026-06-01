@@ -1,5 +1,7 @@
 # Industrial-AI
 
+tagline (UI): Steel Defect Detection System
+
 ## Project Description
 
 Built an end-to-end deep learning pipeline for automated steel surface defect classification, including data extraction, preprocessing, and model training.
